@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>My shop</title>
+  <style type="text/css">
+    body
+    {
+        text-align: center;
+        margin-top: 100px;   
+    }
+    /*#a2
+    {
+      text-decoration: none;
+      font-size: 50px;
+      text-align: center;
+      font-family: Arial;
+      color: white;
+    }
+    #a3
+    {
+      color: #ffaa00;
+      font-size: 25px;
+    }
+    .btn
+    {
+      background-color: #ffffb3;
+    }
+    #p1
+    {
+      color: #d9b38c;
+      font-style: italic;
+      font-size: 75px;
+    }*/
+  </style>
+</head>
+<body>
+  <p id="p1">Click on link below to add new product</p>
+<a href="#" onclick="f()" id="a2">Add new product</a>
+<p id="a1"></p>
+<p id="a3" style="color:#cc9900;font-size:20px">LIST<br></p>
+<p id="a4" style="color:#cc9900;font-size:20px">Cart<br></p>
+<script>
+	var product =  [];
+  var cart = [];
+  var i=0,j,cn=0;
+  var d=JSON.parse(localStorage.getItem("shopper"));
+for(var qw=0;qw<d.length;qw++)
+{
+  var k=new Object();
+  k.id=d[qw].id;
+  i=d[qw].id;
+
+  k.name=d[qw].name;
+  // k.desc=d[i].desc;
+  k.price=d[qw].price;
+  // k.quant=d[i].quant;
+  product.push(k);
+  ndom(k);
+  i++;
+}
+  var d1=JSON.parse(localStorage.getItem("cart"));
+for(var qw=0;qw<d1.length;qw++)
+{
+  var k=new Object();
+  k.id=d1[qw].id;
+  i=d1[qw].id;
+
+  k.name=d1[qw].name;
+  // k.desc=d[i].desc;
+  k.price=d1[qw].price;
+  // k.quant=d[i].quant;
+  cart.push(k);
+  cdom(k);
+  i++;
+}
+ function findindex(x)
+    {
+      for(j=0;j<product.length;j++)
+      {
+        if(product[j].id==x)
+          {return j;
+           break;
+          }
+      }
+    }
+
+function blank(targetElement)
+{
+	var a  =document.getElementById("a1");
+	var br = document.createElement("br");
+    a.appendChild(br);
+}
+function blank1(targetElement)
+{
+	var a  =document.getElementById("a3");
+	var br = document.createElement("br");
+    a.appendChild(br);
+}
+function blank2(targetElement)
+{
+	var a  =document.getElementById("a4");
+	var br = document.createElement("br");
+    a.appendChild(br);
+}
+function hide()
+{
+	var a = document.getElementById("a2");
+	a.setAttribute("style","visibility:hidden");
+  var bb = document.getElementById("p1");
+  bb.setAttribute("style","visibility:hidden");
+}
+function unhide()
+{
+  var a = document.getElementById("a2");
+  a.setAttribute("style","visibility:visible");
+  var b= document.getElementById("p1");
+  b.setAttribute("style","visibility:visible");
+}
+function add()
+{
+      var obj = new Object();
+      obj.id=i;
+      obj.name=document.getElementById("i1").value;
+      obj.price=document.getElementById("i3").value;
+       if(obj.name.length==0)
+  {unHideAddNewProductLink();
+      alert("Name cant be left empty");
+    return;}
+  
+  // if(obj.desc.length==0)
+  // {unHideAddNewProductLink();
+  //     alert("desc cant be left empty");
+  //   return;}
+  
+  if(obj.price.length==0)
+  {unHideAddNewProductLink();
+      alert("price cant be left empty");
+    return;}
+
+  // if(obj.qty.length==0)
+  // {unHideAddNewProductLink();
+  //     alert("quant cant be left empty");
+  //   return;}
+
+      product.push(obj);
+      var a = document.createElement("div");
+      a.setAttribute("id",obj.id);
+      var b = document.getElementById("a3");
+      var a22 = findindex(obj.id);
+      var c = document.createTextNode("Product name--"+product[a22].name+"  ");
+      blank1();
+      var d =document.createTextNode("Product price--"+product[a22].price+"  ");
+      a.appendChild(c);
+      a.appendChild(d);
+      b.appendChild(a);
+      unhide();
+      var e = document.createElement("button");
+      // e.setAttribute("color","#ccffcc");
+      e.innerHTML="remove";
+      a.appendChild(e);
+      e.addEventListener("click",function(){
+      	b.removeChild(a);
+        var r=findindex(a.id);
+        product.splice(r,1);
+        var jso=JSON.stringify(product);
+     localStorage.setItem("shopper",jso);
+      });
+      var f = document.createElement("button");
+      f.innerHTML="add to cart";
+      // f.setAttribute("color","#ccffcc");
+      a.appendChild(f);
+      f.addEventListener("click",function(){
+        for(h=0;h<product.length;h++)
+        {
+          if(a.id==h)
+          {
+           var obj1 = new Object();
+           obj1.name=product[h].name;
+              obj1.price=product[h].price;
+              cart.push(obj1);
+                var jso=JSON.stringify(cart);
+     localStorage.setItem("cart",jso);     
+          }  
+        }
+      	  var g = document.getElementById("a4");
+          b.removeChild(a);
+      	  g.appendChild(c);
+      	  g.appendChild(d);
+      	  blank2();
+      });
+      var h = document.createElement("button");
+      h.innerHTML="update";
+      // h.setAttribute("color","#ccffcc");
+      a.appendChild(h);
+      h.addEventListener("click",function()
+      {
+          panel(a); 
+           var jso=JSON.stringify(product);
+     localStorage.setItem("shopper",jso);    
+      });
+       var jso=JSON.stringify(product);
+     localStorage.setItem("shopper",jso);
+      deletepanel();
+     i++;
+}
+function deletepanel()
+{
+  var a=document.getElementById("a1");
+  var b=a.childNodes;
+  while(b.length>0)
+  {
+    a.removeChild(b[0]);
+  }
+}
+function panel(t)
+{
+ 
+   var a  = document.getElementById("a1");
+    var b =document.createElement("h1");
+    var c= document.createTextNode("update info");
+    b.appendChild(c);
+    a.appendChild(b);
+    blank();
+        var a  = document.getElementById("a1");
+        var b = document.createElement("input");
+        b.setAttribute("type","text");
+        b.setAttribute("placeholder","Enter product name");
+        b.setAttribute("id","i1");
+        b.setAttribute("style","width: 1000px");
+        a.appendChild(b);
+        blank();
+        blank();
+        var a  = document.getElementById("a1");
+        var b = document.createElement("textarea");
+        b.setAttribute("type","text");
+        b.setAttribute("placeholder","Enter product desp");
+        b.setAttribute("id","i2");
+        b.setAttribute("style","width: 1000px");
+        a.appendChild(b);
+        blank();
+        var a  = document.getElementById("a1");
+        var b = document.createElement("input");
+        b.setAttribute("type","text");
+        b.setAttribute("placeholder","Enter product price");
+        b.setAttribute("id","i3");
+        b.setAttribute("style","width: 1000px");
+        a.appendChild(b);
+        blank();
+        var a  = document.getElementById("a1");
+        var b = document.createElement("input");
+        b.setAttribute("type","text");
+        b.setAttribute("placeholder","Enter product quantity");
+        b.setAttribute("id","i4");
+        b.setAttribute("style","width: 1000px");
+        a.appendChild(b);
+        blank();
+        var a = document.getElementById("a1");
+        var b = document.createElement("button");
+        var c = document.createTextNode("update");
+        b.appendChild(c);
+        b.setAttribute("style","width: 1000px;height: 50px");
+        b.setAttribute("id","b1");
+        a.appendChild(b);
+        b.addEventListener("click",function()
+          {
+            unhide();
+            var h=document.getElementById("i1").value;
+             var j=document.getElementById("i3").value;
+            var z = document.createElement("div");
+            var x = document.getElementById("a3");
+            var m = document.createTextNode("Product name"+h+"  ");
+            var n =  document.createTextNode("Product price"+j+"  ");
+            z.appendChild(m);
+            z.appendChild(n);
+            x.replaceChild(z,t);
+            console.log(t.id);
+            var x=findindex(t.id);
+            product[x].id=t.id;
+            product[x].name=h;
+            // product[x].desc=d;
+            product[x].price=j;
+            // product[x].qty=n;
+            localStorage.setItem("shopper",JSON.stringify(product));
+            var e = document.createElement("button");
+            e.innerHTML="remove";
+            // e.setAttribute("color","#ccffcc");
+            z.appendChild(e);
+            e.addEventListener("click",function(){
+            x.removeChild(z);
+            var r=findindex(t.id);
+            product.splice(r,1);
+             var jso=JSON.stringify(product);
+     localStorage.setItem("shopper",jso);
+            });
+            
+		      var h = document.createElement("button");
+		      h.innerHTML="add to cart";
+		      // h.setAttribute("color","#ccffcc");
+		      z.appendChild(h);
+		      h.addEventListener("click",function()
+		      {
+		          var obj1 = new Object();
+              obj1.name=product[i].name;
+              obj1.price=product[i].price;
+              cart.push(obj1);
+              var jso=JSON.stringify(cart);
+              localStorage.setItem("cart",jso);
+              var g = document.getElementById("a4");
+              // x.removeChild(z);
+              g.appendChild(m);
+              g.appendChild(n);
+              blank2();   
+		      });
+      deletepanel();
+});        
+}
+// function edit()
+// {
+//   var a=document.getElementById(i1).value;
+//   var b=document.getElementById(i3).value;
+//    var c = document.createElement("div");
+//       var d = document.getElementById("a3");
+//       c.appendChild(a);
+//       c.appendChild(b);
+//       d.replaceChild(c);
+
+// }
+function f()
+{
+		hide();
+		var a  = document.getElementById("a1");
+		var b =document.createElement("h1");
+		var c= document.createTextNode("Add info");
+		b.appendChild(c);
+		a.appendChild(b);
+		blank();
+        var a  = document.getElementById("a1");
+        var b = document.createElement("input");
+        b.setAttribute("type","text");
+        b.setAttribute("placeholder","Enter product name");
+        b.setAttribute("id","i1");
+        b.setAttribute("style","width: 1000px");
+        a.appendChild(b);
+        blank();
+        blank();
+        var a  = document.getElementById("a1");
+        var b = document.createElement("textarea");
+        b.setAttribute("type","text");
+        b.setAttribute("placeholder","Enter product desp");
+        b.setAttribute("id","i2");
+        b.setAttribute("style","width: 1000px");
+        a.appendChild(b);
+        blank();
+        var a  = document.getElementById("a1");
+        var b = document.createElement("input");
+        b.setAttribute("type","text");
+        b.setAttribute("placeholder","Enter product price");
+        b.setAttribute("id","i3");
+        b.setAttribute("style","width: 1000px");
+        a.appendChild(b);
+        blank();
+        var a  = document.getElementById("a1");
+        var b = document.createElement("input");
+        b.setAttribute("type","text");
+        b.setAttribute("placeholder","Enter product quantity");
+        b.setAttribute("id","i4");
+        b.setAttribute("style","width: 1000px");
+        a.appendChild(b);
+        blank();
+        var a = document.getElementById("a1");
+        var b = document.createElement("button");
+        var c = document.createTextNode("Add");
+        b.appendChild(c);
+        b.setAttribute("style","width: 1000px;height: 50px");
+        b.setAttribute("id","b1");
+        a.appendChild(b);
+        b.addEventListener("click",add);
+	}
+  function ndom(k)
+  {
+    var a = document.getElementById("a3");
+    var pr=document.createElement("div");
+  pr.setAttribute("id",k.id);
+  // adding name
+  var n=document.createElement("p");
+  var d=k.name;
+  var c=document.createTextNode("Product name--"+d+"  ");
+  n.appendChild(c);
+  var n12=document.createElement("p");
+  var t=k.price;
+  var c12=document.createTextNode("Product price--"+t+"  ");
+  n.appendChild(c12);
+  var delet = document.createElement("button");
+  delet.setAttribute("id","delet");
+  delet.setAttribute("class","btn");
+  delet.innerHTML = "remove";
+  delet.addEventListener("click",function(){
+            a.removeChild(pr);
+            // x.removeChild(z);
+            // console.log(pr.id);
+            var r=findindex(pr.id);
+            product.splice(r,1);
+            
+            var jso=JSON.stringify(product);
+     localStorage.setItem("shopper",jso);
+      });
+  
+  var update = document.createElement("button");
+  update.setAttribute("id","update");
+  update.setAttribute("class","btn");
+  update.innerHTML = "update";
+  update.addEventListener("click",function(){
+          panel(pr);     
+           var jso=JSON.stringify(product);
+     localStorage.setItem("shopper",jso);
+      });
+      deletepanel();
+  var cart = document.createElement("button");
+  cart.setAttribute("id","cart");
+  cart.setAttribute("class","btn");
+  cart.innerHTML = "add to cart";
+  cart.addEventListener("click",function(){
+
+    var jso=JSON.stringify(cart);
+     localStorage.setItem("cart",jso);
+   });
+  n.appendChild(delet);
+  n.appendChild(update);
+  n.appendChild(cart);
+  pr.appendChild(n);  
+  a.appendChild(pr);
+   var jso=JSON.stringify(product);
+     localStorage.setItem("shopper",jso);
+  unhide();
+  }
+  function cdom(k)
+  {
+        var a = document.getElementById("a4");
+        var pr=document.createElement("div");
+      pr.setAttribute("id",k.id);
+      // adding name
+      var n=document.createElement("p");
+      var d=k.name;
+      var c=document.createTextNode("Product name--"+d+"  ");
+      n.appendChild(c);
+      var n12=document.createElement("p");
+      var t=k.price;
+      var c12=document.createTextNode("Product price--"+t+"  ");
+      n.appendChild(c12);
+      var jso=JSON.stringify(cart);
+     localStorage.setItem("cart",jso);
+  }
+</script>
+</body>
+</html>
