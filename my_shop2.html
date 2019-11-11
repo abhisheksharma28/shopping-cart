@@ -42,7 +42,7 @@
 <script>
 	var product =  [];
   var cart = [];
-  var i=0,j,cn=0;
+  var i=0,j=0,cn=0;
   var d=JSON.parse(localStorage.getItem("shopper"));
 for(var qw=0;qw<d.length;qw++)
 {
@@ -51,27 +51,27 @@ for(var qw=0;qw<d.length;qw++)
   i=d[qw].id;
 
   k.name=d[qw].name;
-  // k.desc=d[i].desc;
+  k.desc=d[qw].desc;
   k.price=d[qw].price;
-  // k.quant=d[i].quant;
+  k.quant=d[qw].quant;
   product.push(k);
   ndom(k);
   i++;
 }
   var d1=JSON.parse(localStorage.getItem("cart"));
-for(var qw=0;qw<d1.length;qw++)
+for(var qq=0;qq<d1.length;qq++)
 {
-  var k=new Object();
-  k.id=d1[qw].id;
-  i=d1[qw].id;
+  var kk=new Object();
+  kk.id=d1[qq].id;
+  j=d1[qq].id;
 
-  k.name=d1[qw].name;
-  // k.desc=d[i].desc;
-  k.price=d1[qw].price;
-  // k.quant=d[i].quant;
-  cart.push(k);
-  cdom(k);
-  i++;
+  kk.name=d1[qq].name;
+  kk.desc=d1[qq].desc;
+  kk.price=d1[qq].price;
+  kk.quant=d1[qq].quant;
+  cart.push(kk);
+  cdom(kk);
+  j++;
 }
  function findindex(x)
     {
@@ -121,26 +121,28 @@ function add()
       var obj = new Object();
       obj.id=i;
       obj.name=document.getElementById("i1").value;
+      obj.desc=document.getElementById("i2").value;
       obj.price=document.getElementById("i3").value;
+      obj.quant=document.getElementById("i4").value;
        if(obj.name.length==0)
   {unHideAddNewProductLink();
       alert("Name cant be left empty");
     return;}
   
-  // if(obj.desc.length==0)
-  // {unHideAddNewProductLink();
-  //     alert("desc cant be left empty");
-  //   return;}
+  if(obj.desc.length==0)
+  {unHideAddNewProductLink();
+      alert("desc cant be left empty");
+    return;}
   
   if(obj.price.length==0)
   {unHideAddNewProductLink();
       alert("price cant be left empty");
     return;}
 
-  // if(obj.qty.length==0)
-  // {unHideAddNewProductLink();
-  //     alert("quant cant be left empty");
-  //   return;}
+  if(obj.quant.length==0)
+  {unHideAddNewProductLink();
+      alert("quant cant be left empty");
+    return;}
 
       product.push(obj);
       var a = document.createElement("div");
@@ -148,10 +150,14 @@ function add()
       var b = document.getElementById("a3");
       var a22 = findindex(obj.id);
       var c = document.createTextNode("Product name--"+product[a22].name+"  ");
-      blank1();
+      var c1 = document.createTextNode("Product desc--"+product[a22].desc+"  ");
+      // blank1();
       var d =document.createTextNode("Product price--"+product[a22].price+"  ");
+      var c2 = document.createTextNode("Product quantity--"+product[a22].quant+"  ");
       a.appendChild(c);
+      a.appendChild(c1);
       a.appendChild(d);
+      a.appendChild(c2);
       b.appendChild(a);
       unhide();
       var e = document.createElement("button");
@@ -175,17 +181,40 @@ function add()
           if(a.id==h)
           {
            var obj1 = new Object();
+           obj1.id=product[h].id;
            obj1.name=product[h].name;
+           obj1.desc=product[h].desc;
               obj1.price=product[h].price;
+              obj1.quant=product[h].quant;
               cart.push(obj1);
                 var jso=JSON.stringify(cart);
      localStorage.setItem("cart",jso);     
+     break;
           }  
         }
       	  var g = document.getElementById("a4");
-          b.removeChild(a);
-      	  g.appendChild(c);
-      	  g.appendChild(d);
+          var g1 = document.createElement("a4");
+          // b.removeChild(a);
+          var cc = document.createTextNode("Product name--"+product[h].name+"  ");
+      var cc1 = document.createTextNode("Product desc--"+product[h].desc+"  ");
+      // blank1();
+      var dc =document.createTextNode("Product price--"+product[h].price+"  ");
+      var cc2 = document.createTextNode("Product quantity--"+product[h].quant+"  ");
+      	  g1.appendChild(cc);
+          g1.appendChild(cc1);
+      	  g1.appendChild(dc);
+          g1.appendChild(cc2);
+                var add = document.createElement("button");
+        add.setAttribute("id","cart1");
+        add.setAttribute("class","btn");
+        add.innerHTML = "+";
+        var sub = document.createElement("button");
+        sub.setAttribute("id","cart2");
+        sub.setAttribute("class","btn");
+        sub.innerHTML = "-";
+        g1.appendChild(add);
+        g1.appendChild(sub);
+        g.appendChild(g1);
       	  blank2();
       });
       var h = document.createElement("button");
@@ -265,21 +294,27 @@ function panel(t)
           {
             unhide();
             var h=document.getElementById("i1").value;
+            var h1=document.getElementById("i2").value;
              var j=document.getElementById("i3").value;
+             var h2=document.getElementById("i4").value;
             var z = document.createElement("div");
             var x = document.getElementById("a3");
-            var m = document.createTextNode("Product name"+h+"  ");
-            var n =  document.createTextNode("Product price"+j+"  ");
+            var m = document.createTextNode("Product name--"+h+"  ");
+            var m1 = document.createTextNode("Product desc--"+h1+"  ");
+            var n =  document.createTextNode("Product price--"+j+"  ");
+            var m2 = document.createTextNode("Product quantity--"+h2+"  ");
             z.appendChild(m);
+            z.appendChild(m1);
             z.appendChild(n);
+            z.appendChild(m2);
             x.replaceChild(z,t);
-            console.log(t.id);
+            // console.log(t.id);
             var x=findindex(t.id);
             product[x].id=t.id;
             product[x].name=h;
-            // product[x].desc=d;
+            product[x].desc=h1;
             product[x].price=j;
-            // product[x].qty=n;
+            product[x].quant=h2;
             localStorage.setItem("shopper",JSON.stringify(product));
             var e = document.createElement("button");
             e.innerHTML="remove";
@@ -292,24 +327,58 @@ function panel(t)
              var jso=JSON.stringify(product);
      localStorage.setItem("shopper",jso);
             });
-            
+            var up = document.createElement("button");
+            up.innerHTML="update";
+            z.appendChild(up);
+            // up.addEventListener("click",function(){
+            //   panel(t);
+            //   var jso=JSON.stringify(product);
+            //   localStorage.setItem("shopper",jso);
+            // })
 		      var h = document.createElement("button");
 		      h.innerHTML="add to cart";
 		      // h.setAttribute("color","#ccffcc");
 		      z.appendChild(h);
+
 		      h.addEventListener("click",function()
 		      {
 		          var obj1 = new Object();
-              obj1.name=product[i].name;
-              obj1.price=product[i].price;
+              obj1.id=product[x].id;
+              obj1.name=product[x].name;
+              obj1.desc=product[x].desc;
+              obj1.price=product[x].price;
+              obj1.quant=product[x].quant;
               cart.push(obj1);
               var jso=JSON.stringify(cart);
               localStorage.setItem("cart",jso);
               var g = document.getElementById("a4");
+              var g1 = document.createElement("div");
               // x.removeChild(z);
-              g.appendChild(m);
-              g.appendChild(n);
-              blank2();   
+            var mm = document.createTextNode("Product name--"+product[x].name+"  ");
+            var mm1 = document.createTextNode("Product desc--"+product[x].desc+"  ");
+            var n1 =  document.createTextNode("Product price--"+product[x].price+"  ");
+            var mm2 = document.createTextNode("Product quantity--"+product[x].quant+"  ");
+              g1.appendChild(mm);
+              g1.appendChild(mm1);
+              g1.appendChild(n1);
+              g1.appendChild(mm2);
+          var add = document.createElement("button");
+        add.setAttribute("id","cart12");
+        add.setAttribute("class","btn");
+        add.innerHTML = "+";
+        g1.appendChild(add);
+        add.addEventListener("click",function(){
+             var f = g1.childNodes[0];
+             console.log(f);
+        });
+        var sub = document.createElement("button");
+        sub.setAttribute("id","cart21");
+        sub.setAttribute("class","btn");
+        sub.innerHTML = "-";
+        g1.appendChild(add);
+        g1.appendChild(sub);
+        g.appendChild(g1);
+              // blank2();   
 		      });
       deletepanel();
 });        
@@ -380,16 +449,23 @@ function f()
   {
     var a = document.getElementById("a3");
     var pr=document.createElement("div");
+    var cn=1;
   pr.setAttribute("id",k.id);
   // adding name
-  var n=document.createElement("p");
+  // var n=document.createElement("p");
   var d=k.name;
   var c=document.createTextNode("Product name--"+d+"  ");
-  n.appendChild(c);
-  var n12=document.createElement("p");
+  // n.appendChild(c);
+  pr.appendChild(c);
+  var cc=document.createTextNode("Product desc--"+k.desc+"  ");
+  // var n12=document.createElement("p");
+  pr.appendChild(cc);
   var t=k.price;
   var c12=document.createTextNode("Product price--"+t+"  ");
-  n.appendChild(c12);
+  // n.appendChild(c12);
+  pr.appendChild(c12);
+  var cd=document.createTextNode("Product quantity--"+k.quant+"  ");
+  pr.appendChild(cd);
   var delet = document.createElement("button");
   delet.setAttribute("id","delet");
   delet.setAttribute("class","btn");
@@ -415,40 +491,102 @@ function f()
      localStorage.setItem("shopper",jso);
       });
       deletepanel();
-  var cart = document.createElement("button");
-  cart.setAttribute("id","cart");
-  cart.setAttribute("class","btn");
-  cart.innerHTML = "add to cart";
-  cart.addEventListener("click",function(){
-
+  var cart1 = document.createElement("button");
+  cart1.setAttribute("id","cart");
+  cart1.setAttribute("class","btn");
+  cart1.innerHTML = "add to cart";
+  // console.log(i);
+  var r=findindex(pr.id);
+  cart1.addEventListener("click",function(){
+              var obj1 = new Object();
+              obj1.id=product[r].id;
+              obj1.name=product[r].name;
+              obj1.desc=product[r].desc;
+              obj1.price=product[r].price;
+              obj1.quant=product[r].quant;
+              cart.push(obj1);
+              var jso=JSON.stringify(cart);
+              localStorage.setItem("cart",jso);
+              var g = document.getElementById("a4");
+              var g1 = document.createElement("div");
+              // x.removeChild(z);
+              var cdd = document.createTextNode("Product name--"+product[r].name+"  ");
+              var cd1 = document.createTextNode("Product desc--"+product[r].desc+"  ");
+              // blank1();
+              var dd =document.createTextNode("Product price--"+product[r].price+"  ");
+              var cd2 = document.createTextNode("Product quantity--"+1+"  ");
+              g1.appendChild(cdd);
+              g1.appendChild(cd1);
+              g1.appendChild(dd);
+              g1.appendChild(cd2);
+              var add = document.createElement("button");
+        add.setAttribute("id","cart1");
+        add.setAttribute("class","btn");
+        add.innerHTML = "+";
+        add.addEventListener("click",function(){
+          var f = g1.childNodes[3];
+           console.log(f);
+           var l=1;
+           l=l+1;
+           var x = document.createTextNode("Product quantity--"+l);
+           console.log(x);
+           g1.replaceChild(x,f);
+          //   cn=cn+1;
+          // var cdd2 = document.createTextNode("Product quantity--"+cn+"  ");
+          // g1.replaceChild(cdd2,cd2);
+        })
+        var sub = document.createElement("button");
+        sub.setAttribute("id","cart2");
+        sub.setAttribute("class","btn");
+        sub.innerHTML = "-";
+        g1.appendChild(add);
+        g1.appendChild(sub);
+        g.appendChild(g1);
+              // blank2();   
     var jso=JSON.stringify(cart);
      localStorage.setItem("cart",jso);
    });
-  n.appendChild(delet);
-  n.appendChild(update);
-  n.appendChild(cart);
-  pr.appendChild(n);  
+  pr.appendChild(delet);
+  pr.appendChild(update);
+  pr.appendChild(cart1);
+  // pr.appendChild(n);  
   a.appendChild(pr);
    var jso=JSON.stringify(product);
      localStorage.setItem("shopper",jso);
   unhide();
   }
-  function cdom(k)
+  function cdom(kk)
   {
         var a = document.getElementById("a4");
         var pr=document.createElement("div");
-      pr.setAttribute("id",k.id);
+      // console.log(kk.id);
+      // var no = findindex(kk.id);
       // adding name
-      var n=document.createElement("p");
-      var d=k.name;
+      // var n=document.createElement("p");
+      var d=kk.name;
       var c=document.createTextNode("Product name--"+d+"  ");
-      n.appendChild(c);
-      var n12=document.createElement("p");
-      var t=k.price;
+      pr.appendChild(c);
+      var cc=document.createTextNode("Product desc--"+kk.desc+"  ");
+      // var n12=document.createElement("p");
+      pr.appendChild(cc);
+      var t=kk.price;
       var c12=document.createTextNode("Product price--"+t+"  ");
-      n.appendChild(c12);
-      var jso=JSON.stringify(cart);
-     localStorage.setItem("cart",jso);
+      pr.appendChild(c12);
+      var cd=document.createTextNode("Product quantity--"+kk.quant+"  ");
+      pr.appendChild(cd);
+        var add = document.createElement("button");
+        add.setAttribute("id","cart11");
+        add.setAttribute("class","btn");
+        add.innerHTML = "+";
+        var sub = document.createElement("button");
+        sub.setAttribute("id","cart221");
+        sub.setAttribute("class","btn");
+        sub.innerHTML = "-";
+        pr.appendChild(add);
+        pr.appendChild(sub);
+        a.appendChild(pr);
+     //   var jso=JSON.stringify(cart);
+     // localStorage.setItem("cart",jso);
   }
 </script>
 </body>
